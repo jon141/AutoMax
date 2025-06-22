@@ -1,2 +1,2 @@
 # AutoMax
-Automatische Essensbestellung bei MensaMax mit nützlichen Features! test
+Automatische Essensbestellung bei MensaMax mit nützlichen Features! 
