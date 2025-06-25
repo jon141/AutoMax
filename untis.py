@@ -75,7 +75,10 @@ def loginjoin():
     login_button.click() 
     print('login')
     time.sleep(2)
-
+    stundenplan_button = WebDriverWait(driver, 15).until(
+        EC.element_to_be_clickable((By.XPATH, "//div[@class='item-name' and text()='Mein Stundenplan']"))
+    )
+    stundenplan_button.click()
 loginjoin() 
 
 input('Beenden.')
