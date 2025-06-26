@@ -81,5 +81,48 @@ def loginjoin():
     stundenplan_button.click()
 loginjoin() 
 
+
+
+def mittagschule_finden():
+    print("gestartet")
+    time.sleep(3)  # Warte auf das Laden der Seite
+
+    # 1. Top-Koordinate des Zeitelements "12:00" finden
+    zeit_top = None
+    elements = driver.find_elements(By.XPATH, "//div[contains(@class, 'timetable-grid-slot-time')]")
+    for el in elements:
+        try:
+            span = el.find_element(By.XPATH, ".//span[contains(@class, 'timetable-grid-slot-time--time-value')]")
+            if span.text.strip() == "12:00":
+                style = el.get_attribute("style")
+                if "top:" in style:
+                    zeit_top = float(style.split("top:")[1].split("px")[0].strip())
+                    print(f"Top-Koordinate für 12:00: {zeit_top}")
+                    break
+        except:
+            continue
+
+    if zeit_top is None:
+        print("Zeitfeld 12:00 nicht gefunden.")
+        return
+
+    # 2. Alle Karten prüfen, ob sie die Zeit-Koordinate abdecken
+    karten = driver.find_elements(By.XPATH, "//div[contains(@class, 'timetable-grid-card')]")
+    count = 0
+    for karte in karten:
+        style = karte.get_attribute("style")
+        try:
+            top = float(style.split("top:")[1].split("px")[0].strip())
+            height = float(style.split("height:")[1].split("px")[0].strip())
+            if top <= zeit_top <= top + height:
+                count += 1
+        except Exception:
+            continue
+    print(f"Karten auf Höhe 12:00: {count}")
+
+mittagschule_finden()
+
+
+
 input('Beenden.')
 driver.quit()
