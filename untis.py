@@ -39,6 +39,11 @@ wait = WebDriverWait(driver, 10) # wartefunktion, die bis zu 10 s warten kann, o
 untispasswort = configurations['untispasswort']
 untisbenutzername = configurations['untisbenutzername']#
 
+
+with open("bestelltage.json", "w", encoding="utf-8") as f: #leert die bestelltage
+    json.dump({}, f)
+
+
 def wait_for_internet(host="8.8.8.8", port=53, timeout=3): # wenn das Skript mit crontab automatisch beim boot gestartet werden soll, ist erstmal bzw. bis zum Anmelden keine Verbindung vorhande
     while True:
         try:
@@ -153,7 +158,8 @@ def existierende_stunden_zu_uhrzeit(uhrzeit):
                     url_segmente = kartenurl.split('/')
                     #print(url_segmente)
                     datum = url_segmente[9]  # gibt das Datum der Stunde an
-                    print(url_segmente[9])
+                    datum = datum.split("T")[0]
+                    print(datum)
                     if uhrzeit == "12:50":
                         unterrichtsdictionary56[datum] = 1
                     elif uhrzeit == "14:30":
@@ -178,6 +184,18 @@ existierende_stunden_zu_uhrzeit('14:30')
 existierende_stunden_zu_uhrzeit('12:50')
 print("5,6", unterrichtsdictionary56)
 print("7,8", unterrichtsdictionary78)
+
+unterrichtsliste = [key for key in unterrichtsdictionary56 if key in unterrichtsdictionary78] # gibt an wann man 7/8 und 5/6 hat
+print(unterrichtsliste)
+jsonhilfsliste = {}
+
+# Einträge hinzufügen mit Schlüsseln "bestelltag 1", "bestelltag 2", ...
+for index, tag in enumerate(unterrichtsliste, start=1):
+    jsonhilfsliste[f"bestelltag {index}"] = tag
+
+# In JSON-Datei schreiben
+with open("bestelltage.json", "w", encoding="utf-8") as f:
+    json.dump(jsonhilfsliste, f, indent=2, ensure_ascii=False)
 
 # 8:25 und 9:10 und 9:30 -> 1.2. STunde
 # 10:15 und 10:20 und 11:05 -> 3.4
