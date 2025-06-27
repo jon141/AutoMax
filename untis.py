@@ -85,7 +85,7 @@ loginjoin()
 
 
 
-def existierende_stunden_zu_uhrzeit(uhrzeit): # für belibige Zeiten, die Im plan stehen alles stunden, die in der Woche stattfinden finden
+def existierende_stunden_zu_uhrzeit(uhrzeit):
     print("gestartet")
     time.sleep(3)  # Warte auf das Laden der Seite
 
@@ -99,7 +99,7 @@ def existierende_stunden_zu_uhrzeit(uhrzeit): # für belibige Zeiten, die Im pla
                 style = el.get_attribute("style")
                 if "top:" in style:
                     zeit_top = float(style.split("top:")[1].split("px")[0].strip())
-                    print(f"Top-Koordinate für 12:00: {zeit_top}")
+                    print(f"Top-Koordinate für {uhrzeit}: {zeit_top}")
                     break
         except:
             continue
@@ -109,51 +109,41 @@ def existierende_stunden_zu_uhrzeit(uhrzeit): # für belibige Zeiten, die Im pla
         return
 
     # 2. Alle Karten prüfen, ob sie die Zeit-Koordinate abdecken
-    karten = driver.find_elements(By.XPATH, "//div[contains(@class, 'timetable-grid-card')]")
+    idx = 0
     count = 0
-    for karte in karten:
+    while True:
+        karten = driver.find_elements(By.XPATH, "//div[contains(@class, 'timetable-grid-card')]")
+        if idx >= len(karten):
+            break
+        karte = karten[idx]
         style = karte.get_attribute("style")
         try:
             top = float(style.split("top:")[1].split("px")[0].strip())
             height = float(style.split("height:")[1].split("px")[0].strip())
             if top <= zeit_top <= top + height:
                 count += 1
-
-                
-
-                #klassenattribute = karte.get_attribute("class")
-                #print(klassenattribute)
-
                 lesson_card = karte.find_element(By.CLASS_NAME, "lesson-card")
                 lesson_classes = lesson_card.get_attribute("class")
-                # Klassenattribute von normalen Stunden timetable-grid-card
-                # Klassenattribute von Entfall: timetable-grid-card shadow <---
 
-            if "cancelled" in lesson_classes:
-                print('entfall')
-
-                print('entfall')
-                print(karte.text)
-                print(karte.get_attribute("innerHTML"))
-                lesson_card.click()
-                kartenurl = driver.current_url
-                print(kartenurl)# im url ist das datum der stunde enthalten
-                url_segmente = kartenurl.split('/')
-                print(url_segmente)
-                print(url_segmente[7])
-                driver.back()
-
-                # Problem: wenn der URL einmal geöffnet wird, in dem auf die Karte geklickt wird, werden alle anderen Karten ungültig, wenn man mit 
-                # Driver.back zurück geht
-                # Man könnte dann einfach nochmal die karten suchen und zu der karte vom letzten count springen und dann weitermachen und nach Höhe und Entfall suchen
-                # braucht dann viel mehr zeit, aber theoretisch möglich
-
-
-
+                if "cancelled" in lesson_classes:
+                    print('entfall')
+                    print(karte.text)
+                    #print(karte.get_attribute("innerHTML"))
+                    lesson_card.click()
+                    kartenurl = driver.current_url
+                    #print(kartenurl)
+                    url_segmente = kartenurl.split('/')
+                    #print(url_segmente)
+                    print(url_segmente[9]) # gibt das Datum der stunde an
+                    driver.back()
+                    time.sleep(1)  
+                    # Nach dem Zurückgehen: Karten neu suchen und an der richtigen Stelle weitermachen
+                    idx += 1
+                    continue
         except Exception:
-            continue
+            pass
+        idx += 1
     print(f"Karten auf Höhe {uhrzeit}: {count}")
-
 zeiten = ["07:40", "08:25", "09:10", "09:30", "10:15", "10:20", "11:05", "11:15", "12:00", "12:05", "12:50", "13:45", "14:30", "14:35", "15:20", "15:30", "16:15", "16:20", "17:05"]
 # man braucht wahrscheinlihc nicht alle zeiten, aber mal zum testen
 
@@ -161,7 +151,7 @@ zeiten = ["07:40", "08:25", "09:10", "09:30", "10:15", "10:20", "11:05", "11:15"
 #    print(f'-------------------------{e}--------------------------')
 #    existierende_stunden_zu_uhrzeit(e)
 
-existierende_stunden_zu_uhrzeit('12:00')
+existierende_stunden_zu_uhrzeit('14:35')
 
 # 8:25 und 9:10 und 9:30 -> 1.2. STunde
 # 10:15 und 10:20 und 11:05 -> 3.4
