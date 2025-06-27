@@ -83,17 +83,17 @@ loginjoin()
 
 
 
-def mittagschule_finden():
+def existierende_stunden_zu_uhrzeit(uhrzeit): # für belibige Zeiten, die Im plan stehen alles stunden, die in der Woche stattfinden finden
     print("gestartet")
     time.sleep(3)  # Warte auf das Laden der Seite
 
-    # 1. Top-Koordinate des Zeitelements "12:00" finden
+    # 1. Top-Koordinate des Zeitelements uhrzeit finden
     zeit_top = None
     elements = driver.find_elements(By.XPATH, "//div[contains(@class, 'timetable-grid-slot-time')]")
     for el in elements:
         try:
             span = el.find_element(By.XPATH, ".//span[contains(@class, 'timetable-grid-slot-time--time-value')]")
-            if span.text.strip() == "12:00":
+            if span.text.strip() == uhrzeit:
                 style = el.get_attribute("style")
                 if "top:" in style:
                     zeit_top = float(style.split("top:")[1].split("px")[0].strip())
@@ -103,7 +103,7 @@ def mittagschule_finden():
             continue
 
     if zeit_top is None:
-        print("Zeitfeld 12:00 nicht gefunden.")
+        print(f"Zeitfeld {uhrzeit} nicht gefunden.")
         return
 
     # 2. Alle Karten prüfen, ob sie die Zeit-Koordinate abdecken
@@ -116,13 +116,40 @@ def mittagschule_finden():
             height = float(style.split("height:")[1].split("px")[0].strip())
             if top <= zeit_top <= top + height:
                 count += 1
+
+                
+
+                klassenattribute = karte.get_attribute("class")
+                print(klassenattribute)
+
+                # Klassenattribute von normalen Stunden timetable-grid-card
+                # Klassenattribute von Entfall: timetable-grid-card shadow <---
+
+
+                if "shadow" in klassenattribute:    # doch nicht zuverlässig, weil vertretungen und raumänderungen, die grün angezeigt werden auch shadow als attribut haben
+                    print("----- Entfall detected -----")
+                
+                print('\n ----------------- \n', karte.text)
+
+
         except Exception:
             continue
-    print(f"Karten auf Höhe 12:00: {count}")
+    print(f"Karten auf Höhe {uhrzeit}: {count}")
 
-mittagschule_finden()
+zeiten = ["07:40", "08:25", "09:10", "09:30", "10:15", "10:20", "11:05", "11:15", "12:00", "12:05", "12:50", "13:45", "14:30", "14:35", "15:20", "15:30", "16:15", "16:20", "17:05"]
+# man braucht wahrscheinlihc nicht alle zeiten, aber mal zum testen
+
+for e in zeiten:
+    print(f'-------------------------{e}--------------------------')
+    existierende_stunden_zu_uhrzeit(e)
+
+# 8:25 und 9:10 und 9:30 -> 1.2. STunde
+# 10:15 und 10:20 und 11:05 -> 3.4
+#"12:00", "12:05", "12:50", "13:45" -> 5.6
+# "14:30", "14:35", "15:20", "15:30" -> 7.8.
+#"16:15", "16:20", "17:05" -> 9.10
 
 
 
 input('Beenden.')
-driver.quit()
+driver.quit() 
