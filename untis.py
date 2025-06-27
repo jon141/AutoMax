@@ -85,6 +85,9 @@ loginjoin()
 
 
 
+
+unterrichtsdictionary56 = {}
+unterrichtsdictionary78 = {}
 def existierende_stunden_zu_uhrzeit(uhrzeit):
     print("gestartet")
     time.sleep(3)  # Warte auf das Laden der Seite
@@ -140,6 +143,26 @@ def existierende_stunden_zu_uhrzeit(uhrzeit):
                     # Nach dem Zurückgehen: Karten neu suchen und an der richtigen Stelle weitermachen
                     idx += 1
                     continue
+                else:
+                    print('kein entfall')
+                    print(karte.text)
+                    #print(karte.get_attribute("innerHTML"))
+                    lesson_card.click()
+                    kartenurl = driver.current_url
+                    #print(kartenurl)
+                    url_segmente = kartenurl.split('/')
+                    #print(url_segmente)
+                    datum = url_segmente[9]  # gibt das Datum der Stunde an
+                    print(url_segmente[9])
+                    if uhrzeit == "12:50":
+                        unterrichtsdictionary56[datum] = 1
+                    elif uhrzeit == "14:30":
+                        unterrichtsdictionary78[datum] = 1
+                    driver.back()
+                    time.sleep(1)  
+                    # Nach dem Zurückgehen: Karten neu suchen und an der richtigen Stelle weitermachen
+                    idx += 1
+                    continue
         except Exception:
             pass
         idx += 1
@@ -151,7 +174,10 @@ zeiten = ["07:40", "08:25", "09:10", "09:30", "10:15", "10:20", "11:05", "11:15"
 #    print(f'-------------------------{e}--------------------------')
 #    existierende_stunden_zu_uhrzeit(e)
 
-existierende_stunden_zu_uhrzeit('14:35')
+existierende_stunden_zu_uhrzeit('14:30')
+existierende_stunden_zu_uhrzeit('12:50')
+print("5,6", unterrichtsdictionary56)
+print("7,8", unterrichtsdictionary78)
 
 # 8:25 und 9:10 und 9:30 -> 1.2. STunde
 # 10:15 und 10:20 und 11:05 -> 3.4
