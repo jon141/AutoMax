@@ -12,6 +12,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.keys import Keys
 
 with open('config.json', 'r', encoding='utf-8') as file:
     configurations = json.load(file)  # config daten laden
@@ -119,17 +121,33 @@ def existierende_stunden_zu_uhrzeit(uhrzeit): # für belibige Zeiten, die Im pla
 
                 
 
-                klassenattribute = karte.get_attribute("class")
-                print(klassenattribute)
+                #klassenattribute = karte.get_attribute("class")
+                #print(klassenattribute)
 
+                lesson_card = karte.find_element(By.CLASS_NAME, "lesson-card")
+                lesson_classes = lesson_card.get_attribute("class")
                 # Klassenattribute von normalen Stunden timetable-grid-card
                 # Klassenattribute von Entfall: timetable-grid-card shadow <---
 
+            if "cancelled" in lesson_classes:
+                print('entfall')
 
-                if "shadow" in klassenattribute:    # doch nicht zuverlässig, weil vertretungen und raumänderungen, die grün angezeigt werden auch shadow als attribut haben
-                    print("----- Entfall detected -----")
-                
-                print('\n ----------------- \n', karte.text)
+                print('entfall')
+                print(karte.text)
+                print(karte.get_attribute("innerHTML"))
+                lesson_card.click()
+                kartenurl = driver.current_url
+                print(kartenurl)# im url ist das datum der stunde enthalten
+                url_segmente = kartenurl.split('/')
+                print(url_segmente)
+                print(url_segmente[7])
+                driver.back()
+
+                # Problem: wenn der URL einmal geöffnet wird, in dem auf die Karte geklickt wird, werden alle anderen Karten ungültig, wenn man mit 
+                # Driver.back zurück geht
+                # Man könnte dann einfach nochmal die karten suchen und zu der karte vom letzten count springen und dann weitermachen und nach Höhe und Entfall suchen
+                # braucht dann viel mehr zeit, aber theoretisch möglich
+
 
 
         except Exception:
@@ -139,9 +157,11 @@ def existierende_stunden_zu_uhrzeit(uhrzeit): # für belibige Zeiten, die Im pla
 zeiten = ["07:40", "08:25", "09:10", "09:30", "10:15", "10:20", "11:05", "11:15", "12:00", "12:05", "12:50", "13:45", "14:30", "14:35", "15:20", "15:30", "16:15", "16:20", "17:05"]
 # man braucht wahrscheinlihc nicht alle zeiten, aber mal zum testen
 
-for e in zeiten:
-    print(f'-------------------------{e}--------------------------')
-    existierende_stunden_zu_uhrzeit(e)
+#for e in zeiten:
+#    print(f'-------------------------{e}--------------------------')
+#    existierende_stunden_zu_uhrzeit(e)
+
+existierende_stunden_zu_uhrzeit('12:00')
 
 # 8:25 und 9:10 und 9:30 -> 1.2. STunde
 # 10:15 und 10:20 und 11:05 -> 3.4
