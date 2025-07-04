@@ -56,7 +56,7 @@ def wait_for_internet(host="8.8.8.8", port=53, timeout=3): # wenn das Skript mit
             print("Keine Internetverbindung. Neuer Versuch in 5 Sekunden...")
             time.sleep(5)
 
-wait_for_internet() # immer vor start ausführen, evtl. bevor essen bestellt wird um fehler zu vermeiden (erstmal optional)
+#wait_for_internet() # immer vor start ausführen, evtl. bevor essen bestellt wird um fehler zu vermeiden (erstmal optional)
 
 
 
@@ -83,7 +83,7 @@ def login():
     print('login')
     time.sleep(1) # ladezeit
 
-login()
+#login()
 
 
 
@@ -112,7 +112,7 @@ def essensseite_laden(): # funktioniert
     driver.switch_to.frame("contentFrame")
     time.sleep(5)
 
-essensseite_laden()
+#essensseite_laden()
 #essensseite_debug()
 # Beenden
 
@@ -172,10 +172,7 @@ def woche_zurueck(): # im plan eine Woche zurück gehen
     zurueck_button.click()
     time.sleep(5)
 
-aktuelle_wochenposition_auslesen()
-woche_vor()
-aktuelle_wochenposition_auslesen()
-#woche_vor()
+
 
 def essen_bestellen_ne(): # funktionniert nicht
     driver.switch_to.default_content() # gibt anscheinend mehrere Frames, im content Frame ist die Essensbestellung
@@ -281,6 +278,13 @@ def finde_essensid_für_gerichte_an_datum(datum: str, gerichtnamen: list):
     
     return essen_id_bestell_liste
 
+wait_for_internet()
+login()
+essensseite_laden()
+aktuelle_wochenposition_auslesen()
+woche_vor()
+aktuelle_wochenposition_auslesen()
+#woche_vor()
 datum_ = '20250710'
 gerichtnamen = ['Menü1', 'Menü2', 'Saiten, 1 Paar', 'Maultaschen']
 
