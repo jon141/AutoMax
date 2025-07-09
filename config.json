@@ -1,9 +1,14 @@
-{
+ {
 "projekt": "bb2399",
 "einrichtung": "jkg",
 "benutzername": "benutzername",
 "passwort": "passwort",
 "os": "",
 "untisbenutzername": "benutzername",
-"untispasswort": "passwort"
+"untispasswort": "passwort",
+"fromMail": "Login-Mailadresse",
+"MailPasswort": "passwort",
+"smtp_server": "mail.gmx.net",
+"smtp_port": 587,
+"toMail": "Adresse des Empfängers",
 }
