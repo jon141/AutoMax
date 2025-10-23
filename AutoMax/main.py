@@ -31,12 +31,14 @@ with open('config.json', 'r', encoding='utf-8') as file:
     configurations = json.load(file)  # config daten laden
 
 system = configurations['os']
+headless = configurations['headless']
 
 # Headless Chrome konfigurieren
 options = Options()
-#options.add_argument("--headless") # wenn aktiviert läuft es im Hintergrund
-#options.add_argument("--no-sandbox") # wenn aktiviert läuft es im Hintergrund
-#options.add_argument("--disable-dev-shm-usage") # wenn aktiviert läuft es im Hintergrund
+if headless:
+    options.add_argument("--headless") # wenn aktiviert läuft es im Hintergrund
+    options.add_argument("--no-sandbox") # wenn aktiviert läuft es im Hintergrund
+    options.add_argument("--disable-dev-shm-usage") # wenn aktiviert läuft es im Hintergrund
 
 
 if system == 'linux':
