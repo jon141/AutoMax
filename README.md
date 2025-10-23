@@ -17,3 +17,4 @@ Automatische Essensbestellung bei MensaMax mit nützlichen Features!
 - ein Auftrag kann mehrere Menüs enthalten
 - es können Fallback Menüs eingetragen werden, die bestellt werden, wenn es zu fehlern bei der anderen Bestellung gab (Funktionstüchtigkeit ungewiss)
 - Nach Abschluss aller fälligen Bestellungen wird eine Email gesendet, was bestellt wurde
+- automatische Bestellung über Selenium -> öffnen des Browsers über headless mit true in config.json deaktivieren
