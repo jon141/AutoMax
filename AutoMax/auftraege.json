@@ -1,0 +1,86 @@
+{
+    "infos": {
+        "Wochentage": [
+            "Mo",
+            "Di",
+            "Mi",
+            "Do",
+            "Fr",
+            "Sa",
+            "So"
+        ],
+        "alle_gerichtnamen": [
+            "Menü1",
+            "Menü2",
+            "Saiten, 1 Paar",
+            "LKW",
+            "Schnitzelweck (vegan)",
+            "Schnitzelweck (Schwein)",
+            "Schnitzelweck (Geflügel)",
+            "Maultaschen",
+            "Maultaschen VEGAN",
+            "Großer Salatteller VEGAN",
+            "Kleiner Salat VEGAN",
+            "Kartoffelsalat VEGAN",
+            "Wrap Hühnchen",
+            "Wrap Tomate/Mozzarella",
+            "Wrap Schinken/Käse",
+            "Wrap Hummus/Gemüse VEGAN",
+            "z. Zt. nicht bestellbar Pizzaschnitte vegetarisch",
+            "Pizzaschnitte Salami",
+            "z. Zt. nicht bestellbar Pizzaschnitte Schinken"
+        ],
+        "sonstiges": "fallback und gerichte sind liste; alle daten im Format JJJJMMTT, zB 20251022"
+    },
+    "dauerauftraege": {
+        "auftrag_1": {
+            "wochentage": [
+                "Di",
+                "Do"
+            ],
+            "gerichte": [
+                "Menü1",
+                "Maultaschen"
+            ],
+            "aktiv": false,
+            "exeptions": [
+                "20251028",
+                "20251030",
+                "20251023"
+            ],
+            "gueltigszeitraum": {
+                "start": "20251022",
+                "ende": "20251231"
+            },
+            "fallback": [
+                "Menü2"
+            ],
+            "done_dates": []
+        }
+    },
+    "einzelauftraege": {
+        "auftrag_1": {
+            "datum": "20251104",
+            "gerichte": [
+                "Menü2",
+                "Saiten, 1 Paar"
+            ],
+            "fallback": [
+                "Menü1"
+            ],
+            "aktiv": true,
+            "done": false
+        },
+        "auftrag_2": {
+            "datum": "20251104",
+            "gerichte": [
+                "Menü1"
+            ],
+            "fallback": [
+                "Kleiner Salat VEGAN"
+            ],
+            "aktiv": false,
+            "done": false
+        }
+    }
+}
