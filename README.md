@@ -13,7 +13,7 @@ Automatische Essensbestellung bei MensaMax mit nützlichen Features!
       - in einem festgelegten Gültigkeitszeitraum
       - Ausnahmedaten
   - Einzelaufträge:
-      - einmalige Bestellung
+      - einmalige Bestellung an ausgewähltem Datum
 - ein Auftrag kann mehrere Menüs enthalten
 - es können Fallback Menüs eingetragen werden, die bestellt werden, wenn es zu fehlern bei der anderen Bestellung gab (Funktionstüchtigkeit ungewiss)
 - Nach Abschluss aller fälligen Bestellungen wird eine Email gesendet, was bestellt wurde
