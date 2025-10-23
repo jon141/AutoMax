@@ -10,5 +10,7 @@
     "MailPasswort": "passwort",
     "smtp_server": "mail.gmx.net",
     "smtp_port": 587,
-    "toMail": "Adresse des Empfängers"
+    "toMail": "Adresse des Empfängers",
+    "headless": false
+
 }
